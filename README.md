@@ -83,7 +83,7 @@ docker exec -it Oracle-db sqlplus sys/<your_password>@FREE as sysdba
 ## 💻 SQL Developer
 
 ### Instalación de SQL Developer
-1. **Descargar SQL Developer** desde el [sitio oficial de Oracle](https://www.oracle.com/database/technologies/appdev/sql-developer.html).
+1. **Descargar SQL Developer** desde el [sitio oficial de Oracle](https://www.oracle.com/database/sqldeveloper/technologies/download/).
    - **Windows:** Instalar la versión con JDK 17 incluido.
    - **Linux:** Ejecutar el script `sqldeveloper.sh`.
 
