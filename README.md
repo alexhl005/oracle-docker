@@ -1,13 +1,18 @@
 # 🚀 Guía de Instalación de Oracle Database con Docker
 
-Bienvenido a esta guía paso a paso para instalar y configurar Oracle Database usando Docker. 🐳
-
 ## 📚 Tabla de Contenidos
 - [Requisitos Previos](#requisitos-previos)
 - [Instalación](#instalación)
+  - [Descarga de la Imagen Oracle](#descarga-de-la-imagen-oracle)
+  - [Ejecución del Contenedor](#ejecución-del-contenedor)
+  - [Verificación del Contenedor](#verificación-del-contenedor)
 - [Configuración](#configuración)
+  - [Establecer Contraseña de Administrador](#establecer-contraseña-de-administrador)
 - [Conexión](#conexión)
+  - [Conexión vía Terminal](#conexión-vía-terminal)
 - [SQL Developer](#sql-developer)
+  - [Instalación de SQL Developer](#instalación-de-sql-developer)
+  - [Configuración de la Conexión](#configuración-de-la-conexión)
 - [Notas Importantes](#notas-importantes)
 - [Solución de Problemas Comunes](#solución-de-problemas-comunes)
 - [Referencias](#referencias)
@@ -41,15 +46,15 @@ docker pull container-registry.oracle.com/database/free:latest
 Ahora, ejecuta el contenedor con el siguiente comando:
 ```bash
 docker run --name Oracle-db \
--p 1521:1521 \
--p 5500:5500 \
--e ORACLE_CHARACTERSET=utf8 \
--e ENABLE_ARCHIVELOG=true \
--e ORACLE_MEM=4000 \
--e ENABLE_FORCE_LOGGING=true \
--v C:\data\oracle:/opt/oracle/oradata \
--d \
-container-registry.oracle.com/database/free:latest
+  -p 1521:1521 \
+  -p 5500:5500 \
+  -e ORACLE_CHARACTERSET=utf8 \
+  -e ENABLE_ARCHIVELOG=true \
+  -e ORACLE_MEM=4000 \
+  -e ENABLE_FORCE_LOGGING=true \
+  -v C:\data\oracle:/opt/oracle/oradata \
+  -d \
+  container-registry.oracle.com/database/free:latest
 ```
 
 ### 3️⃣ Verificación del Contenedor
@@ -65,7 +70,7 @@ docker ps
 ### Establecer Contraseña de Administrador
 Para establecer la contraseña de administrador (por ejemplo, "oracle123"), ejecuta el siguiente comando:
 ```bash
-docker exec Oracle-db ./setPassword.sh <your_password>
+docker exec Oracle-db ./setPassword.sh oracle123
 ```
 
 ---
@@ -75,7 +80,7 @@ docker exec Oracle-db ./setPassword.sh <your_password>
 ### Conexión vía Terminal
 Para conectarte a la base de datos a través de SQL*Plus, usa este comando:
 ```bash
-docker exec -it Oracle-db sqlplus sys/<your_password>@FREE as sysdba
+docker exec -it Oracle-db sqlplus sys/oracle123@FREE as sysdba
 ```
 
 ---
@@ -83,17 +88,31 @@ docker exec -it Oracle-db sqlplus sys/<your_password>@FREE as sysdba
 ## 💻 SQL Developer
 
 ### Instalación de SQL Developer
-1. **Descargar SQL Developer** desde el [sitio oficial de Oracle](https://www.oracle.com/database/sqldeveloper/technologies/download/).
-   - **Windows:** Instalar la versión con JDK 17 incluido.
-   - **Linux:** Ejecutar el script `sqldeveloper.sh`.
+1. Descarga SQL Developer desde el sitio oficial de Oracle.
+2. **Windows:** Instalar la versión con JDK 17 incluido.
+3. **Linux:** Ejecutar el script `sqldeveloper.sh`.
 
 ### Configuración de la Conexión
-1. **Nombre:** Descripción para la conexión (por ejemplo, "Oracle Docker DB").
-2. **Usuario:** `sys` como `sysdba`.
-3. **Contraseña:** `<your_password>`.
-4. **Host:** `localhost`.
-5. **Puerto:** 1521 (o 5500).
-6. **Servicio:** `FREE`.
+- **Nombre:** Descripción para la conexión (por ejemplo, "Oracle Docker DB").
+- **Usuario:** sys como sysdba.
+- **Contraseña:** `oracle123`.
+- **Host:** localhost.
+- **Puerto:** 1521 (o 5500).
+- **Servicio:** FREE.
+
+---
+
+## 📖 Manual de Uso de los Archivos
+
+### Archivos de Configuración
+- **setPassword.sh:** Script utilizado para establecer la contraseña del usuario administrador. Asegúrate de proporcionar una contraseña segura.
+- **docker-compose.yml:** Si se incluye, este archivo permite iniciar el contenedor y sus configuraciones de manera más sencilla.
+
+### Ejecución de Comandos
+Todos los comandos deben ejecutarse en una terminal con acceso a Docker. Asegúrate de que Docker esté en funcionamiento antes de ejecutar los comandos.
+
+### Mantenimiento
+Realiza copias de seguridad periódicas de los datos almacenados en el contenedor. Puedes usar herramientas de respaldo de Docker o scripts personalizados.
 
 ---
 
@@ -107,12 +126,12 @@ docker exec -it Oracle-db sqlplus sys/<your_password>@FREE as sysdba
 
 ## 🛠️ Solución de Problemas Comunes
 
-### Si el contenedor no inicia, verifica los logs:
+Si el contenedor no inicia, verifica los logs:
 ```bash
 docker logs Oracle-db
 ```
 
-### Para reiniciar el contenedor:
+Para reiniciar el contenedor:
 ```bash
 docker restart Oracle-db
 ```
